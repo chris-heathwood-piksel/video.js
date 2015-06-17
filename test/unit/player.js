@@ -659,7 +659,8 @@ test('should clear pending errors on disposal', function() {
 });
 
 test('pause is called when player ended event is fired and player is not paused', function() {
-  var video = document.createElement('video'),
+  var clock = sinon.useFakeTimers(),
+      video = document.createElement('video'),
       player = PlayerTest.makePlayer({}, video),
       pauses = 0;
   player.paused = function() {
@@ -669,6 +670,7 @@ test('pause is called when player ended event is fired and player is not paused'
     pauses++;
   };
   player.trigger('ended');
+  clock.tick(1000);
   equal(pauses, 1, 'pause was called');
 });
 
