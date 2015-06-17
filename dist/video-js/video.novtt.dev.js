@@ -4211,12 +4211,15 @@ vjs.Player.prototype.onProgress = function(){
  * @event ended
  */
 vjs.Player.prototype.onEnded = function(){
+  var self = this;
   this.addClass('vjs-ended');
   if (this.options_['loop']) {
     this.currentTime(0);
     this.play();
   } else if (!this.paused()) {
-    this.pause();
+    // In Safari the ended event can actually fire before the video has ended
+    // so delay the pause
+    setTimeout(function(){ self.pause(); }, 1000);
   }
 };
 
